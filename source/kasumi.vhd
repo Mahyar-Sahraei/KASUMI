@@ -36,7 +36,7 @@ BEGIN
 					Ri <= pt(31 DOWNTO 0);
 					KEY <= kt;
 				ELSE
-					round_key(KEY, v_KL, v_KO, v_KI);
+					round_key(round, KEY, v_KL, v_KO, v_KI);
 					v_Li := Ri XOR round_function(round, Li, v_KL, v_KO, v_KI);
 					v_Ri := Li;
 					IF round = 8 THEN

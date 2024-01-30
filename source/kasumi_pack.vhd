@@ -15,14 +15,14 @@ PACKAGE kasumi_pack IS
 	TYPE SBOX9_T IS ARRAY(511 DOWNTO 0) OF integer;
 	
 	CONSTANT S7_TABLE: SBOX7_T := (
-		54, 50, 62, 56, 22, 34, 94, 96, 38, 6, 63, 93, 2, 18,123, 33,
-		55,113, 39,114, 21, 67, 65, 12, 47, 73, 46, 27, 25,111,124, 81,
-		53, 9,121, 79, 52, 60, 58, 48, 101, 127, 40, 120, 104, 70, 71, 43,
-		20,122, 72, 61, 23,109, 13,100, 77, 1, 16, 7, 82, 10,105, 98,
-		117,116, 76, 11, 89,106, 0,125,118, 99, 86, 69, 30, 57,126, 87,
-		112, 51, 17, 5, 95, 14, 90, 84, 91, 8, 35,103, 32, 97, 28, 66,
-		102, 31, 26, 45, 75, 4, 85, 92, 37, 74, 80, 49, 68, 29,115, 44,
-		64,107,108, 24,110, 83, 36, 78, 42, 19, 15, 41, 88,119, 59, 3
+		 54, 50, 62, 56, 22, 34, 94, 96, 38,  6, 63, 93,  2, 18,123, 33,
+		 55,113, 39,114, 21, 67, 65, 12, 47, 73, 46, 27, 25,111,124, 81,
+		 53,  9,121, 79, 52, 60, 58, 48,101,127, 40,120,104, 70, 71, 43,
+		 20,122, 72, 61, 23,109, 13,100, 77,  1, 16,  7, 82, 10,105, 98,
+		117,116, 76, 11, 89,106,  0,125,118, 99, 86, 69, 30, 57,126, 87,
+		112, 51, 17,  5, 95, 14, 90, 84, 91,  8, 35,103, 32, 97, 28, 66,
+		102, 31, 26, 45, 75,  4, 85, 92, 37, 74, 80, 49, 68, 29,115, 44,
+		64 ,107,108, 24,110, 83, 36, 78, 42, 19, 15, 41, 88,119, 59,  3
 	);
 	
 	CONSTANT S9_TABLE: SBOX9_T := (
@@ -61,7 +61,8 @@ PACKAGE kasumi_pack IS
 	);
 	
 	FUNCTION ROL16(
-		X: u16)
+		X: u16;
+		N: integer)
 	RETURN u16;
 	
 	FUNCTION S7(
@@ -97,6 +98,7 @@ PACKAGE kasumi_pack IS
 	RETURN u32;
 	
 	PROCEDURE round_key(
+		SIGNAL   RD:  IN integer;
 		SIGNAL   KEY: IN u128;
 		VARIABLE KL:  OUT u32;
 		VARIABLE KO:  OUT u48;
@@ -109,10 +111,11 @@ END PACKAGE kasumi_pack;
 PACKAGE BODY kasumi_pack IS
 
 	FUNCTION ROL16(
-		X: u16)
+		X: u16;
+		N: integer)
 	RETURN u16 IS
 	BEGIN
-		RETURN X(14 DOWNTO 0) & X(15);
+		RETURN X(15 - N DOWNTO 0) & X(15 DOWNTO 16 - N);
 	END;
 	
 	FUNCTION S7(
@@ -148,8 +151,8 @@ PACKAGE BODY kasumi_pack IS
 		KL1 := KL(31 DOWNTO 16);
 		KL2 := KL(15 DOWNTO 0);
 		
-		R := R XOR ROL16(L AND KL1);
-		L := L XOR ROL16(R OR  KL2);
+		R := R XOR ROL16(L AND KL1, 1);
+		L := L XOR ROL16(R OR  KL2, 1);
 		
 		RETURN R & L;
 	END;
@@ -229,12 +232,76 @@ PACKAGE BODY kasumi_pack IS
 	END;
 	
 	PROCEDURE round_key(
+		SIGNAL   RD:  IN  integer;
 		SIGNAL   KEY: IN  u128;
 		VARIABLE KL:  OUT u32;
 		VARIABLE KO:  OUT u48;
-		VARIABLE KI:  OUT u48) IS
+		VARIABLE KI:  OUT u48) 
+	IS
+		CONSTANT C:  u128 := X"0123456789ABCDEFFEDCBA9876543210";
+		VARIABLE Kp: u128;
+		
+		ALIAS K1:  u16 IS KEY(127 DOWNTO 112);
+		ALIAS K2:  u16 IS KEY(111 DOWNTO  96);
+		ALIAS K3:  u16 IS KEY(95  DOWNTO  80);
+		ALIAS K4:  u16 IS KEY(79  DOWNTO  64);
+		ALIAS K5:  u16 IS KEY(63  DOWNTO  48);
+		ALIAS K6:  u16 IS KEY(47  DOWNTO  32);
+		ALIAS K7:  u16 IS KEY(31  DOWNTO  16);
+		ALIAS K8:  u16 IS KEY(15  DOWNTO   0);
+		
+		ALIAS Kp1: u16 IS KEY(127 DOWNTO 112);
+		ALIAS Kp2: u16 IS KEY(111 DOWNTO  96);
+		ALIAS Kp3: u16 IS KEY(95  DOWNTO  80);
+		ALIAS Kp4: u16 IS KEY(79  DOWNTO  64);
+		ALIAS Kp5: u16 IS KEY(63  DOWNTO  48);
+		ALIAS Kp6: u16 IS KEY(47  DOWNTO  32);
+		ALIAS Kp7: u16 IS KEY(31  DOWNTO  16);
+		ALIAS Kp8: u16 IS KEY(15  DOWNTO   0);
 	BEGIN
-		-- TODO
+		Kp := KEY XOR C;
+		
+		CASE RD IS
+			WHEN 1 =>
+				KL := ROL16(K1,  1) & Kp3;
+				KO := ROL16(K2,  5) & ROL16(K6,  8) & ROL16(K7, 13);
+				KI := Kp5 & Kp4 & Kp8;
+				
+			WHEN 2 =>
+				KL := ROL16(K2,  1) & Kp4;
+				KO := ROL16(K3,  5) & ROL16(K7,  8) & ROL16(K8, 13);
+				KI := Kp6 & Kp5 & Kp1;
+				
+			WHEN 3 =>
+				KL := ROL16(K3,  1) & Kp5;
+				KO := ROL16(K4,  5) & ROL16(K8,  8) & ROL16(K1, 13);
+				KI := Kp7 & Kp6 & Kp2;
+				
+			WHEN 4 =>
+				KL := ROL16(K4,  1) & Kp6;
+				KO := ROL16(K5,  5) & ROL16(K1,  8) & ROL16(K2, 13);
+				KI := Kp8 & Kp7 & Kp3;
+				
+			WHEN 5 =>
+				KL := ROL16(K5,  1) & Kp7;
+				KO := ROL16(K6,  5) & ROL16(K2,  8) & ROL16(K3, 13);
+				KI := Kp1 & Kp8 & Kp4;
+				
+			WHEN 6 =>
+				KL := ROL16(K6,  1) & Kp8;
+				KO := ROL16(K7,  5) & ROL16(K3,  8) & ROL16(K4, 13);
+				KI := Kp2 & Kp1 & Kp5;
+				
+			WHEN 7 =>
+				KL := ROL16(K7,  1) & Kp1;
+				KO := ROL16(K8,  5) & ROL16(K4,  8) & ROL16(K5, 13);
+				KI := Kp3 & Kp2 & Kp6;
+				
+			WHEN OTHERS => -- RD = 8
+				KL := ROL16(K8,  1) & Kp2;
+				KO := ROL16(K1,  5) & ROL16(K5,  8) & ROL16(K6, 13);
+				KI := Kp4 & Kp3 & Kp7;
+		END CASE;
 	END round_key;
 	
 END PACKAGE BODY kasumi_pack;
