@@ -18,37 +18,25 @@ END kasumi;
 
 
 ARCHITECTURE behavioural OF kasumi IS
-	SIGNAL Li, Ri: u32;
-	SIGNAL KEY: u128;
-	SIGNAL round: integer := 0;
 BEGIN
 	PROCESS(clk)
-		VARIABLE v_Li, v_Ri: u32;
+		VARIABLE v_Li, v_Ri, TMP: u32;
 		VARIABLE v_KL: u32;
 		VARIABLE v_KO, v_KI: u48;
 	BEGIN
 		IF rising_edge(clk) THEN
 			IF nrst = '0' THEN
-				round <= 0;
+				ct <= (others => '0');
 			ELSE
-				IF round = 0 THEN
-					Li <= pt(63 DOWNTO 32);
-					Ri <= pt(31 DOWNTO 0);
-					KEY <= kt;
-				ELSE
-					round_key(round, KEY, v_KL, v_KO, v_KI);
-					v_Li := Ri XOR round_function(round, Li, v_KL, v_KO, v_KI);
-					v_Ri := Li;
-					IF round = 8 THEN
-						ct <= v_Li & v_Ri;
-						round <= 0;
-					ELSE
-						ct <= (others => '0');
-						round <= round + 1;
-					END IF;
-					Li <= v_Li;
-					Ri <= v_Ri;
-				END IF;
+				v_Li := pt(63 DOWNTO 32);
+				v_Ri := pt(31 DOWNTO 0);
+				FOR round IN 1 TO 8 LOOP 
+					round_key(round, kt, v_KL, v_KO, v_KI);
+					TMP := v_Li;
+					v_Li := v_Ri XOR round_function(round, v_Li, v_KL, v_KO, v_KI);
+					v_Ri := TMP;
+				END LOOP;
+				ct <= v_Li & v_Ri;
 			END IF;
 		END IF;
 	END PROCESS;

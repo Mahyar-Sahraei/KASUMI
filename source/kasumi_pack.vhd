@@ -11,8 +11,8 @@ PACKAGE kasumi_pack IS
 	SUBTYPE u9   IS std_logic_vector(8   DOWNTO  0);
 	SUBTYPE u7   IS std_logic_vector(6   DOWNTO  0);
 	
-	TYPE SBOX7_T IS ARRAY(127 DOWNTO 0) OF integer;
-	TYPE SBOX9_T IS ARRAY(511 DOWNTO 0) OF integer;
+	TYPE SBOX7_T IS ARRAY(0 TO 127) OF integer;
+	TYPE SBOX9_T IS ARRAY(0 TO 511) OF integer;
 	
 	CONSTANT S7_TABLE: SBOX7_T := (
 		 54, 50, 62, 56, 22, 34, 94, 96, 38,  6, 63, 93,  2, 18,123, 33,
@@ -98,7 +98,7 @@ PACKAGE kasumi_pack IS
 	RETURN u32;
 	
 	PROCEDURE round_key(
-		SIGNAL   RD:  IN integer;
+		CONSTANT RD:  IN integer;
 		SIGNAL   KEY: IN u128;
 		VARIABLE KL:  OUT u32;
 		VARIABLE KO:  OUT u48;
@@ -115,7 +115,7 @@ PACKAGE BODY kasumi_pack IS
 		N: integer)
 	RETURN u16 IS
 	BEGIN
-		RETURN X(15 - N DOWNTO 0) & X(15 DOWNTO 16 - N);
+		RETURN u16(X(15 - N DOWNTO 0) & X(15 DOWNTO 16 - N));
 	END;
 	
 	FUNCTION S7(
@@ -154,7 +154,7 @@ PACKAGE BODY kasumi_pack IS
 		R := R XOR ROL16(L AND KL1, 1);
 		L := L XOR ROL16(R OR  KL2, 1);
 		
-		RETURN R & L;
+		RETURN u32(R & L);
 	END;
 	
 	FUNCTION FI(
@@ -166,8 +166,11 @@ PACKAGE BODY kasumi_pack IS
 		VARIABLE R1, L2, R3, R4: u9;
 		VARIABLE L1, R2, L3, L4: u7;
 	BEGIN
-		L := I(15 DOWNTO 7);
-		R := I(6  DOWNTO 0);
+		L := I(15 DOWNTO  7);
+		R := I(6  DOWNTO  0);
+		
+		KI1 := KI(15 DOWNTO  9);
+		KI2 := KI(8  DOWNTO  0);
 		
 		L1 := R;
 		R1 := S9(L) XOR ("00" & R);
@@ -178,7 +181,7 @@ PACKAGE BODY kasumi_pack IS
 		L4 := S7(L3) XOR R3(6 DOWNTO 0);
 		R4 := R3;
 		
-		RETURN L4 & R4;
+		RETURN u16(L4 & R4);
 	END;
 	
 	FUNCTION FO(
@@ -213,7 +216,7 @@ PACKAGE BODY kasumi_pack IS
 		R := FI(L XOR KO3, KI3) XOR R;
 		L := TMP;
 		
-		RETURN L & R;
+		RETURN u32(L & R);
 	END;
 
 	FUNCTION round_function(
@@ -232,7 +235,7 @@ PACKAGE BODY kasumi_pack IS
 	END;
 	
 	PROCEDURE round_key(
-		SIGNAL   RD:  IN  integer;
+		CONSTANT   RD:  IN  integer;
 		SIGNAL   KEY: IN  u128;
 		VARIABLE KL:  OUT u32;
 		VARIABLE KO:  OUT u48;
@@ -240,26 +243,28 @@ PACKAGE BODY kasumi_pack IS
 	IS
 		CONSTANT C:  u128 := X"0123456789ABCDEFFEDCBA9876543210";
 		VARIABLE Kp: u128;
-		
-		ALIAS K1:  u16 IS KEY(127 DOWNTO 112);
-		ALIAS K2:  u16 IS KEY(111 DOWNTO  96);
-		ALIAS K3:  u16 IS KEY(95  DOWNTO  80);
-		ALIAS K4:  u16 IS KEY(79  DOWNTO  64);
-		ALIAS K5:  u16 IS KEY(63  DOWNTO  48);
-		ALIAS K6:  u16 IS KEY(47  DOWNTO  32);
-		ALIAS K7:  u16 IS KEY(31  DOWNTO  16);
-		ALIAS K8:  u16 IS KEY(15  DOWNTO   0);
-		
-		ALIAS Kp1: u16 IS Kp(127 DOWNTO 112);
-		ALIAS Kp2: u16 IS Kp(111 DOWNTO  96);
-		ALIAS Kp3: u16 IS Kp(95  DOWNTO  80);
-		ALIAS Kp4: u16 IS Kp(79  DOWNTO  64);
-		ALIAS Kp5: u16 IS Kp(63  DOWNTO  48);
-		ALIAS Kp6: u16 IS Kp(47  DOWNTO  32);
-		ALIAS Kp7: u16 IS Kp(31  DOWNTO  16);
-		ALIAS Kp8: u16 IS Kp(15  DOWNTO   0);
+		VARIABLE K1, K2, K3, K4, K5, K6, K7, K8: u16;
+		VARIABLE Kp1, Kp2, Kp3, Kp4, Kp5, Kp6, Kp7, Kp8: u16;
 	BEGIN
 		Kp := KEY XOR C;
+		
+		K1  := KEY(127 DOWNTO 112);
+		K2  := KEY(111 DOWNTO  96);
+		K3  := KEY(95  DOWNTO  80);
+		K4  := KEY(79  DOWNTO  64);
+		K5  := KEY(63  DOWNTO  48);
+		K6  := KEY(47  DOWNTO  32);
+		K7  := KEY(31  DOWNTO  16);
+		K8  := KEY(15  DOWNTO   0);
+		
+		Kp1 := KEY(127 DOWNTO 112);
+		Kp2 := KEY(111 DOWNTO  96);
+		Kp3 := KEY(95  DOWNTO  80);
+		Kp4 := KEY(79  DOWNTO  64);
+		Kp5 := KEY(63  DOWNTO  48);
+		Kp6 := KEY(47  DOWNTO  32);
+		Kp7 := KEY(31  DOWNTO  16);
+		Kp8 := KEY(15  DOWNTO   0);
 		
 		CASE RD IS
 			WHEN 1 =>

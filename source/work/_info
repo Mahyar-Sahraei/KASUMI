@@ -9,92 +9,167 @@ z2
 !i10f 100
 cModel Technology
 Z0 dC:/Users/Mahyar/Documents/GitHub/KASUMI/source
-Ekasumi
-Z1 w1706620827
-Z2 DPx4 work 11 kasumi_pack 0 22 dHBje8H>ni79;nA6WOZdZ3
-Z3 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
-Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
-Z5 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 4
+T_opt
+!s110 1706793004
+V0SnVeNGLh^J>hQGS>fZo[2
+Z1 04 9 4 work kasumi_tb test 1
+=1-182649de28fd-65bb982b-4f-2ba8
+o-quiet -auto_acc_if_foreign -work work
+Z2 tCvgOpt 0
+n@_opt
+Z3 OL;O;2020.4;71
 R0
-Z6 8C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd
-Z7 FC:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd
+T_opt1
+!s110 1706797550
+VNgFm>DiZEUNiK1]XE`_P;3
+R1
+=6-182649de28fd-65bba9ee-2f-25c8
+Z4 o-quiet -auto_acc_if_foreign -work work +acc
+R2
+n@_opt1
+R3
+T_opt2
+!s110 1706793878
+V^BfR9dL8^iF<<gi60`XmJ0
+04 6 11 work kasumi behavioural 1
+=1-182649de28fd-65bb9b95-319-3f4c
+R4
+R2
+n@_opt2
+R3
+R0
+Ekasumi
+Z5 w1706759792
+Z6 DPx4 work 11 kasumi_pack 0 22 ?fZVJ_e;YW3c<j`]GTzX92
+Z7 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z8 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z9 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 13
+R0
+Z10 8C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd
+Z11 FC:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd
 l0
 L8 1
 V3UgTYmT?8d;1Yce3>JOdU3
 !s100 Mo_7c;W@V4zPd8n<I8]So3
-Z8 OL;C;2020.4;71
+Z12 OL;C;2020.4;71
 32
-Z9 !s110 1706622127
+Z13 !s110 1706795583
 !i10b 1
-Z10 !s108 1706622127.000000
-Z11 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd|
-Z12 !s107 C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd|
+Z14 !s108 1706795583.000000
+Z15 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd|
+Z16 !s107 C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi.vhd|
 !i113 0
-Z13 o-work work -2002 -explicit
-Z14 tExplicit 1 CvgOpt 0
+Z17 o-work work -2002 -explicit
+Z18 tExplicit 1 CvgOpt 0
 Abehavioural
-R2
-R3
-R4
-R5
-Z15 DEx4 work 6 kasumi 0 22 3UgTYmT?8d;1Yce3>JOdU3
-!i122 4
-l24
-Z16 L20 36
-Z17 VjJ1U>J>2ajlYZ5?n5U`4g3
-Z18 !s100 KHdm84JOg]49clIF=Y7MV3
+R6
+R7
 R8
-32
 R9
-!i10b 1
-R10
-R11
+Z19 DEx4 work 6 kasumi 0 22 3UgTYmT?8d;1Yce3>JOdU3
+!i122 13
+l21
+L20 24
+VRzS^EjB:O4fV?<Ic9Z^l22
+!s100 VCfn1ff=K`7j5:@@0`XnN3
 R12
-!i113 0
+32
 R13
+!i10b 1
 R14
+R15
+R16
+!i113 0
+R17
+R18
 Pkasumi_pack
-R3
-R4
-R5
-!i122 3
-Z19 w1706621990
+R7
+R8
+R9
+!i122 17
+Z20 w1706797522
 R0
-Z20 8C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi_pack.vhd
-Z21 FC:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi_pack.vhd
+Z21 8C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_pack.vhd
+Z22 FC:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_pack.vhd
 l0
 L5 1
-VdHBje8H>ni79;nA6WOZdZ3
-!s100 OMXOCEO7lQA4YPXQ^98iJ0
-R8
+VoYR?ZTNa8C_m:<h2;>igz3
+!s100 h@1PAQn??g8U1AfGPTQ^=2
+R12
 32
 b1
-Z22 !s110 1706622122
+Z23 !s110 1706797534
 !i10b 1
-Z23 !s108 1706622122.000000
-Z24 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi_pack.vhd|
-Z25 !s107 C:/Users/Mahyar/Documents/GitHub/KASUMI/source/kasumi_pack.vhd|
+Z24 !s108 1706797534.000000
+Z25 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_pack.vhd|
+Z26 !s107 C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_pack.vhd|
 !i113 0
-R13
-R14
+R17
+R18
 Bbody
-R2
-R3
-R4
-R5
-!i122 3
+DPx4 work 11 kasumi_pack 0 22 oYR?ZTNa8C_m:<h2;>igz3
+R7
+R8
+R9
+!i122 17
 l0
 L111 1
-VaUA4YiD8m11;H>GcP<A1o0
-!s100 KTY_m_RESHHMGd7iVDalO1
-R8
+V]BZ9LWE2YcmmT][booPh:2
+!s100 o:gXQ;LR;2FiC22<K9AZG2
+R12
 32
-R22
-!i10b 1
 R23
+!i10b 1
 R24
 R25
+R26
 !i113 0
-R13
-R14
+R17
+R18
+Ekasumi_tb
+Z27 w1706792938
+R7
+R6
+R8
+R9
+!i122 14
+R0
+Z28 8C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_testbench.vhd
+Z29 FC:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_testbench.vhd
+l0
+L5 1
+VY4UF6JjIGCgM]a9k^7c>^0
+!s100 OZaMfbVzfoKb@<n^0OL1b3
+R12
+32
+Z30 !s110 1706795588
+!i10b 1
+Z31 !s108 1706795588.000000
+Z32 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_testbench.vhd|
+Z33 !s107 C:\Users\Mahyar\Documents\GitHub\KASUMI\source\kasumi_testbench.vhd|
+!i113 0
+R17
+R18
+Atest
+R19
+R7
+R6
+R8
+R9
+DEx4 work 9 kasumi_tb 0 22 Y4UF6JjIGCgM]a9k^7c>^0
+!i122 14
+l13
+L7 27
+V05h@Ma045XR@Z@MDgEBX01
+!s100 bPkfZONb?0zWEE<JYf6582
+R12
+32
+R30
+!i10b 1
+R31
+R32
+R33
+!i113 0
+R17
+R18
